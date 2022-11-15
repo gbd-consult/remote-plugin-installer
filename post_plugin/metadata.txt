@@ -1,0 +1,30 @@
+[general]
+name=POST Plugin
+about=Extends QGIS with revolutionary features that every single GIS end-users was expected (or not)!
+category=Web
+hasProcessingProvider=no
+description=Extends QGIS with revolutionary features that every single GIS end-users was expected (or not)!
+icon=resources/images/default_icon.png
+tags=topic1,topic2
+
+# credits and contact
+author=Firstname LASTNAME
+email=qgis@company.com
+homepage=https://gitlab.com/Company/post_plugin/
+repository=https://gitlab.com/Company/post_plugin/
+tracker=None
+
+# experimental flag
+deprecated=False
+experimental=True
+qgisMinimumVersion=3.22
+qgisMaximumVersion=3.99
+
+# versionnement
+version=0.1
+changelog=
+ Version 0.1.0:
+ - First release
+ - Generated with the [QGIS Plugins templater](https://oslandia.gitlab.io/qgis/template-qgis-plugin/)
+
+
