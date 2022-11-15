@@ -3,6 +3,7 @@
 """
     Main plugin module.
 """
+import threading
 
 # PyQGIS
 from qgis.core import QgsApplication
@@ -50,6 +51,13 @@ class PostPluginPlugin:
         self.iface.registerOptionsWidgetFactory(self.options_factory)
 
         # -- Actions
+        self.action_run = QAction(
+            QgsApplication.getThemeIcon("console/iconSettingsConsole.svg"),
+            self.tr("Run Server", context="PostPluginPlugin"),
+            self.iface.mainWindow(),
+        )
+        self.action_run.triggered.connect(lambda: self.run())
+
         self.action_help = QAction(
             QIcon(":/images/themes/default/mActionHelpContents.svg"),
             self.tr("Help", context="PostPluginPlugin"),
@@ -71,6 +79,7 @@ class PostPluginPlugin:
         )
 
         # -- Menu
+        self.iface.addPluginToMenu(__title__, self.action_run)
         self.iface.addPluginToMenu(__title__, self.action_settings)
         self.iface.addPluginToMenu(__title__, self.action_help)
 
@@ -79,6 +88,7 @@ class PostPluginPlugin:
         # -- Clean up menu
         self.iface.removePluginMenu(__title__, self.action_help)
         self.iface.removePluginMenu(__title__, self.action_settings)
+        self.iface.removePluginMenu(__title__, self.action_run)
 
         # -- Clean up preferences panel in QGIS settings
         self.iface.unregisterOptionsWidgetFactory(self.options_factory)
@@ -95,8 +105,11 @@ class PostPluginPlugin:
 
         :raises Exception: if there is no item in the feed
         """
+        print("Starting server")
         self.httpd = run_server()
-        self.httpd.serve_forever()
+        thread = threading.Thread(target=self.httpd.serve_forever)
+        thread.start()
+        print("Running in background")
 
         try:
             self.log(
