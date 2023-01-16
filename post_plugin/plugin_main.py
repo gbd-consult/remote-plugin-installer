@@ -3,12 +3,13 @@
 """
     Main plugin module.
 """
-import threading
 
 # PyQGIS
+from tempfile import NamedTemporaryFile
+
 from qgis.core import QgsApplication
 from qgis.gui import QgisInterface
-from qgis.PyQt.QtCore import QCoreApplication
+from qgis.PyQt.QtCore import QCoreApplication, QFile
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 from qgis.utils import showPluginHelp
@@ -17,7 +18,8 @@ from qgis.utils import showPluginHelp
 from post_plugin.__about__ import __title__
 from post_plugin.gui.dlg_settings import PlgOptionsFactory
 from post_plugin.toolbelt import PlgLogger, PlgTranslator
-from post_plugin.toolbelt.http import run_server
+from post_plugin.toolbelt.http import AddressInUseException, ServerThread
+from post_plugin.toolbelt.plugin_install import install
 
 # ############################################################################
 # ########## Classes ###############
@@ -34,7 +36,7 @@ class PostPluginPlugin:
         """
         self.iface = iface
         self.log = PlgLogger().log
-        self.httpd = None
+        self.server_thread = None
 
         # translation
         plg_translation_mngr = PlgTranslator()
@@ -52,11 +54,11 @@ class PostPluginPlugin:
 
         # -- Actions
         self.action_run = QAction(
-            QgsApplication.getThemeIcon("console/iconSettingsConsole.svg"),
-            self.tr("Run Server", context="PostPluginPlugin"),
+            QIcon(":/images/themes/default/mActionArrowRight.svg"),
+            self.tr("Start Development Server", context="PostPluginPlugin"),
             self.iface.mainWindow(),
         )
-        self.action_run.triggered.connect(lambda: self.run())
+        self.action_run.triggered.connect(self.run)
 
         self.action_help = QAction(
             QIcon(":/images/themes/default/mActionHelpContents.svg"),
@@ -83,6 +85,10 @@ class PostPluginPlugin:
         self.iface.addPluginToMenu(__title__, self.action_settings)
         self.iface.addPluginToMenu(__title__, self.action_help)
 
+        # -- Toolbar
+        self.toolbar = self.iface.addToolBar("dev server")
+        self.toolbar.addAction(self.action_run)
+
     def unload(self):
         """Cleans up when plugin is disabled/uninstalled."""
         # -- Clean up menu
@@ -96,36 +102,46 @@ class PostPluginPlugin:
         # remove actions
         del self.action_settings
         del self.action_help
+        del self.action_run
+        del self.toolbar
 
-        if self.httpd:
-            self.httpd.server_close()
+        if self.server_thread:
+            del self.server_thread
 
     def run(self):
-        """Main process.
-
-        :raises Exception: if there is no item in the feed
-        """
-        print("Starting server")
-        self.httpd = run_server()
-        thread = threading.Thread(target=self.httpd.serve_forever)
-        thread.start()
-        print("Running in background")
-
-        try:
-            self.log(
-                message=self.tr(
-                    text="Everything ran OK.",
-                    context="PostPluginPlugin",
-                ),
-                log_level=3,
-                push=False,
+        # stop if started
+        if self.server_thread:
+            self.action_run.setIcon(
+                QIcon(":/images/themes/default/mActionArrowRight.svg")
             )
-        except Exception as err:
-            self.log(
-                message=self.tr(
-                    text="Houston, we've got a problem: {}".format(err),
-                    context="PostPluginPlugin",
-                ),
-                log_level=2,
-                push=True,
-            )
+            self.action_run.setIconText("Start Development Server")
+            print("stopping server..")
+
+            self.server_thread.terminate()
+            self.server_thread.httpd.server_close()
+            self.server_thread.wait()
+            del self.server_thread
+            self.server_thread = None
+        # else: start server
+        else:
+            print("starting server..")
+            self.tempfile = NamedTemporaryFile()
+            try:
+                self.server_thread = ServerThread(tempfile=self.tempfile)
+            except AddressInUseException:
+                self.server_thread = None
+
+            if self.server_thread:
+                self.server_thread.output.connect(self.on_server_output)
+                self.server_thread.start()
+
+                self.action_run.setIcon(
+                    QIcon(":/images/themes/default/mActionStop.svg")
+                )
+                self.action_run.setIconText("Stop Development Server")
+            else:
+                print("address in use")
+
+    def on_server_output(self):
+        print("Got a request :)")
+        install(self.tempfile.name)
