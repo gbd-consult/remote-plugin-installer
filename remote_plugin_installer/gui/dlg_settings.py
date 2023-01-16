@@ -16,7 +16,7 @@ from qgis.PyQt.Qt import QUrl
 from qgis.PyQt.QtGui import QDesktopServices, QIcon
 
 # project
-from post_plugin.__about__ import (
+from remote_plugin_installer.__about__ import (
     DIR_PLUGIN_ROOT,
     __icon_path__,
     __title__,
@@ -24,8 +24,8 @@ from post_plugin.__about__ import (
     __uri_tracker__,
     __version__,
 )
-from post_plugin.toolbelt import PlgLogger, PlgOptionsManager
-from post_plugin.toolbelt.preferences import PlgSettingsStructure
+from remote_plugin_installer.toolbelt import PlgLogger, PlgOptionsManager
+from remote_plugin_installer.toolbelt.preferences import PlgSettingsStructure
 
 # ############################################################################
 # ########## Globals ###############
@@ -102,7 +102,6 @@ class ConfigOptionsPage(FORM_CLASS, QgsOptionsPageWidget):
         self.opt_debug.setChecked(settings.debug_mode)
         self.lbl_version_saved_value.setText(settings.version)
 
-
     def reset_settings(self):
         """Reset settings to default values (set in preferences.py module)."""
         default_settings = PlgSettingsStructure()
@@ -113,11 +112,12 @@ class ConfigOptionsPage(FORM_CLASS, QgsOptionsPageWidget):
         # update the form
         self.load_settings()
 
+
 class PlgOptionsFactory(QgsOptionsWidgetFactory):
     """Factory for options widget."""
 
     def __init__(self):
-        """Constructor."""        
+        """Constructor."""
         super().__init__()
 
     def icon(self) -> QIcon:
@@ -125,7 +125,7 @@ class PlgOptionsFactory(QgsOptionsWidgetFactory):
 
         :return: _description_
         :rtype: QIcon
-        """        
+        """
         return QIcon(str(__icon_path__))
 
     def createWidget(self, parent) -> ConfigOptionsPage:
@@ -136,7 +136,7 @@ class PlgOptionsFactory(QgsOptionsWidgetFactory):
 
         :return: options page for tab widget
         :rtype: ConfigOptionsPage
-        """        
+        """
         return ConfigOptionsPage(parent)
 
     def title(self) -> str:
@@ -144,7 +144,7 @@ class PlgOptionsFactory(QgsOptionsWidgetFactory):
 
         :return: plugin title from about module
         :rtype: str
-        """        
+        """
         return __title__
 
     def helpId(self) -> str:
@@ -154,4 +154,3 @@ class PlgOptionsFactory(QgsOptionsWidgetFactory):
         :rtype: str
         """
         return __uri_homepage__
-

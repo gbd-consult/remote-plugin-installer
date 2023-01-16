@@ -15,11 +15,11 @@ from qgis.PyQt.QtWidgets import QAction
 from qgis.utils import showPluginHelp
 
 # project
-from post_plugin.__about__ import __title__
-from post_plugin.gui.dlg_settings import PlgOptionsFactory
-from post_plugin.toolbelt import PlgLogger, PlgTranslator
-from post_plugin.toolbelt.http import AddressInUseException, ServerThread
-from post_plugin.toolbelt.plugin_install import install
+from remote_plugin_installer.__about__ import __title__
+from remote_plugin_installer.gui.dlg_settings import PlgOptionsFactory
+from remote_plugin_installer.toolbelt import PlgLogger, PlgTranslator
+from remote_plugin_installer.toolbelt.http import AddressInUseException, ServerThread
+from remote_plugin_installer.toolbelt.plugin_install import install
 
 # ############################################################################
 # ########## Classes ###############

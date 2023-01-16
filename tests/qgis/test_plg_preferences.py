@@ -15,8 +15,8 @@
 from qgis.testing import unittest
 
 # project
-from post_plugin.__about__ import __version__
-from post_plugin.toolbelt.preferences import PlgSettingsStructure
+from remote_plugin_installer.__about__ import __version__
+from remote_plugin_installer.toolbelt.preferences import PlgSettingsStructure
 
 # ############################################################################
 # ########## Classes #############
@@ -36,6 +36,7 @@ class TestPlgPreferences(unittest.TestCase):
         self.assertTrue(hasattr(settings, "version"))
         self.assertIsInstance(settings.version, str)
         self.assertEqual(settings.version, __version__)
+
 
 # ############################################################################
 # ####### Stand-alone run ########

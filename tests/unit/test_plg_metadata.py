@@ -18,7 +18,7 @@ from pathlib import Path
 from semver import VersionInfo
 
 # project
-from post_plugin import __about__
+from remote_plugin_installer import __about__
 
 # ############################################################################
 # ########## Classes #############

@@ -1,17 +1,17 @@
 [general]
-name=POST Plugin
-about=Extends QGIS with revolutionary features that every single GIS end-users was expected (or not)!
+name=Remote Plugin Installer
+about=QGIS Plugin to automatically install a QGIS Plugin via POST request
 category=Web
 hasProcessingProvider=no
-description=Extends QGIS with revolutionary features that every single GIS end-users was expected (or not)!
+description=QGIS Plugin to automatically install a QGIS Plugin via POST request
 icon=resources/images/default_icon.png
-tags=topic1,topic2
+tags=development
 
 # credits and contact
-author=Firstname LASTNAME
-email=qgis@company.com
-homepage=https://gitlab.com/Company/post_plugin/
-repository=https://gitlab.com/Company/post_plugin/
+author=Geoinformatikbüro Dassau
+email=info@gbd-consult.de
+homepage=https://github.com/gbd-consult/remote-plugin-installer
+repository=https://github.com/gbd-consult/remote-plugin-installer
 tracker=None
 
 # experimental flag
@@ -26,5 +26,3 @@ changelog=
  Version 0.1.0:
  - First release
  - Generated with the [QGIS Plugins templater](https://oslandia.gitlab.io/qgis/template-qgis-plugin/)
-
-

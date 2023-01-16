@@ -11,9 +11,10 @@ from qgis.gui import QgsMessageBar
 from qgis.PyQt.QtWidgets import QPushButton, QWidget
 from qgis.utils import iface
 
+import remote_plugin_installer.toolbelt.preferences as plg_prefs_hdlr
+
 # project package
-from post_plugin.__about__ import __title__
-import post_plugin.toolbelt.preferences as plg_prefs_hdlr
+from remote_plugin_installer.__about__ import __title__
 
 # ############################################################################
 # ########## Classes ###############

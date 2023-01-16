@@ -13,8 +13,8 @@ from qgis.PyQt.QtCore import QLocale, QTranslator
 from qgis.PyQt.QtWidgets import QApplication
 
 # project package
-from post_plugin.__about__ import DIR_PLUGIN_ROOT, __email__, __title__
-from post_plugin.toolbelt import PlgLogger
+from remote_plugin_installer.__about__ import DIR_PLUGIN_ROOT, __email__, __title__
+from remote_plugin_installer.toolbelt import PlgLogger
 
 # ############################################################################
 # ########## Globals ###############

@@ -1,18 +1,18 @@
-# POST Plugin - QGIS Plugin
+# Remote Plugin Installer - QGIS Plugin
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
-[![pylint](https://gitlab.com/Company/post_plugin/lint/pylint.svg)](https://gitlab.com/Company/post_plugin/lint/)
+[![pylint](https://gitlab.com/Company/remote_plugin_installer/lint/pylint.svg)](https://gitlab.com/Company/remote_plugin_installer/lint/)
 [![flake8](https://img.shields.io/badge/linter-flake8-green)](https://flake8.pycqa.org/)
 
 ## Generated options
 
 ### Plugin
 
-"plugin_name": POST Plugin
-"plugin_name_slug": post_plugin
+"plugin_name": Remote Plugin Installer
+"plugin_name_slug": remote_plugin_installer
 "plugin_name_class": PostPlugin
 
 "plugin_category": Web
@@ -45,8 +45,8 @@ See also: [contribution guidelines](CONTRIBUTING.md).
 
 The documentation is generated using Sphinx and is automatically generated through the CI and published on Pages.
 
-- homepage: <https://gitlab.com/Company/post_plugin/>
-- repository: <https://gitlab.com/Company/post_plugin/>
+- homepage: <https://gitlab.com/Company/remote_plugin_installer/>
+- repository: <https://gitlab.com/Company/remote_plugin_installer/>
 - tracker: <None>
 
 ----

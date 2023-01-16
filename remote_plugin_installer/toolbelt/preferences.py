@@ -11,8 +11,8 @@ from dataclasses import asdict, dataclass, fields
 from qgis.core import QgsSettings
 
 # package
-import post_plugin.toolbelt.log_handler as log_hdlr
-from post_plugin.__about__ import __title__, __version__
+import remote_plugin_installer.toolbelt.log_handler as log_hdlr
+from remote_plugin_installer.__about__ import __title__, __version__
 
 # ############################################################################
 # ########## Classes ###############
@@ -26,6 +26,7 @@ class PlgSettingsStructure:
     # global
     debug_mode: bool = False
     version: str = __version__
+
 
 class PlgOptionsManager:
     @staticmethod
