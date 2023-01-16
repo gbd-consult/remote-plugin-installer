@@ -17,13 +17,12 @@ def install(filename):
     start_time = time()
     unloadPlugin(plugin_name)
     loadPlugin(plugin_name)
-    plugin_started = startPlugin(plugin_name)
+    startPlugin(plugin_name)
     end_time = time()
 
     duration = int(round((end_time - start_time) * 1000))
 
-    print(plugin_started)
-    print(f"Plugin {plugin_name} reloaded after {duration} ms")
+    return (plugin_name, duration)
 
 
 def get_plugin_name(filename):

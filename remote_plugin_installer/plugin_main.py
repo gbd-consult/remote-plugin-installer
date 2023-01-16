@@ -119,14 +119,15 @@ class PostPluginPlugin:
                 QIcon(":/images/themes/default/mActionArrowRight.svg")
             )
             self.action_run.setText("Start Development Server")
-            print("stopping server..")
 
             self.server_thread.terminate()
             self.server_thread.httpd.server_close()
             self.server_thread.wait()
             del self.server_thread
             self.server_thread = None
-            print("server stopped.")
+            self.iface.messageBar().pushSuccess(
+                "Stopped server", "The server was stopped successfully."
+            )
         # else: start server
         else:
             print("starting server..")
@@ -147,10 +148,16 @@ class PostPluginPlugin:
                     QIcon(":/images/themes/default/mActionStop.svg")
                 )
                 self.action_run.setText("Stop Development Server")
-                print(f"server running on port {self.port}")
+                self.iface.messageBar().pushSuccess(
+                    "Server running", f"The server is running on port {self.port}."
+                )
             else:
-                print("address in already in use!")
+                self.iface.messageBar().pushWarning(
+                    "Address already in use", f"the port {self.port} is already in use!"
+                )
 
     def on_server_output(self):
-        print("Got a request :)")
-        install(self.tempfile.name)
+        name, duration = install(self.tempfile.name)
+        self.iface.messageBar().pushSuccess(
+            "Plugin installed", f"Plugin {name} installed after {duration}ms"
+        )
