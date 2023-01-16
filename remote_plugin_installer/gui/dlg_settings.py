@@ -83,6 +83,7 @@ class ConfigOptionsPage(FORM_CLASS, QgsOptionsPageWidget):
 
         # misc
         settings.debug_mode = self.opt_debug.isChecked()
+        settings.port = self.opt_port.value()
         settings.version = __version__
 
         # dump new settings into QgsSettings
@@ -100,6 +101,7 @@ class ConfigOptionsPage(FORM_CLASS, QgsOptionsPageWidget):
 
         # global
         self.opt_debug.setChecked(settings.debug_mode)
+        self.opt_port.setValue(settings.port)
         self.lbl_version_saved_value.setText(settings.version)
 
     def reset_settings(self):

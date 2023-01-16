@@ -25,6 +25,7 @@ class PlgSettingsStructure:
 
     # global
     debug_mode: bool = False
+    port: int = 6789
     version: str = __version__
 
 

@@ -17,7 +17,7 @@ from qgis.utils import showPluginHelp
 # project
 from remote_plugin_installer.__about__ import __title__
 from remote_plugin_installer.gui.dlg_settings import PlgOptionsFactory
-from remote_plugin_installer.toolbelt import PlgLogger, PlgTranslator
+from remote_plugin_installer.toolbelt import PlgLogger, PlgOptionsManager, PlgTranslator
 from remote_plugin_installer.toolbelt.http import AddressInUseException, ServerThread
 from remote_plugin_installer.toolbelt.plugin_install import install
 
@@ -37,6 +37,7 @@ class PostPluginPlugin:
         self.iface = iface
         self.log = PlgLogger().log
         self.server_thread = None
+        self.port = PlgOptionsManager().get_plg_settings().port
 
         # translation
         plg_translation_mngr = PlgTranslator()
@@ -106,6 +107,9 @@ class PostPluginPlugin:
         del self.toolbar
 
         if self.server_thread:
+            self.server_thread.terminate()
+            self.server_thread.httpd.server_close()
+            self.server_thread.wait()
             del self.server_thread
 
     def run(self):
@@ -114,7 +118,7 @@ class PostPluginPlugin:
             self.action_run.setIcon(
                 QIcon(":/images/themes/default/mActionArrowRight.svg")
             )
-            self.action_run.setIconText("Start Development Server")
+            self.action_run.setText("Start Development Server")
             print("stopping server..")
 
             self.server_thread.terminate()
@@ -122,12 +126,16 @@ class PostPluginPlugin:
             self.server_thread.wait()
             del self.server_thread
             self.server_thread = None
+            print("server stopped.")
         # else: start server
         else:
             print("starting server..")
+            self.port = PlgOptionsManager().get_plg_settings().port
             self.tempfile = NamedTemporaryFile()
             try:
-                self.server_thread = ServerThread(tempfile=self.tempfile)
+                self.server_thread = ServerThread(
+                    tempfile=self.tempfile, port=self.port
+                )
             except AddressInUseException:
                 self.server_thread = None
 
@@ -138,9 +146,10 @@ class PostPluginPlugin:
                 self.action_run.setIcon(
                     QIcon(":/images/themes/default/mActionStop.svg")
                 )
-                self.action_run.setIconText("Stop Development Server")
+                self.action_run.setText("Stop Development Server")
+                print(f"server running on port {self.port}")
             else:
-                print("address in use")
+                print("address in already in use!")
 
     def on_server_output(self):
         print("Got a request :)")
