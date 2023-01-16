@@ -7,50 +7,11 @@
 [![pylint](https://gitlab.com/Company/remote_plugin_installer/lint/pylint.svg)](https://gitlab.com/Company/remote_plugin_installer/lint/)
 [![flake8](https://img.shields.io/badge/linter-flake8-green)](https://flake8.pycqa.org/)
 
-## Generated options
+## Usage
 
-### Plugin
-
-"plugin_name": Remote Plugin Installer
-"plugin_name_slug": remote_plugin_installer
-"plugin_name_class": PostPlugin
-
-"plugin_category": Web
-"plugin_description_short": This plugin is a revolution!
-"plugin_description_long": Extends QGIS with revolutionary features that every single GIS end-users was expected (or not)!
-"plugin_description_short": This plugin is a revolution!
-"plugin_icon": default_icon.png
-
-"author_name": Firstname LASTNAME
-"author_email": qgis@company.com
-
-"qgis_version_min": 3.22
-"qgis_version_max": 3.99
-
-### Tooling
-
-This project is configured with the following tools:
-
-- [Black](https://black.readthedocs.io/en/stable/) to format the code without any existential question
-- [iSort](https://pycqa.github.io/isort/) to sort the Python imports
-
-Code rules are enforced with [pre-commit](https://pre-commit.com/) hooks.  
-Static code analisis is based on: both
-
-See also: [contribution guidelines](CONTRIBUTING.md).
-
-
-
-### Documentation
-
-The documentation is generated using Sphinx and is automatically generated through the CI and published on Pages.
-
-- homepage: <https://gitlab.com/Company/remote_plugin_installer/>
-- repository: <https://gitlab.com/Company/remote_plugin_installer/>
-- tracker: <None>
-
-----
-
-## License
-
-Distributed under the terms of the [`GPLv3` license](LICENSE).
+Once you have started the development server you can send plugins via POST.
+An Example using CURL:
+```
+curl -F "archive=path/to/plugin.zip" localhost:6789
+```
+The development server does then install the plugin in qgis and reloads it.
