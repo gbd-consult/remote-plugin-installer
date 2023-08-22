@@ -22,6 +22,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         )  # <--- Gets the size of data
         post_data = self.rfile.read(content_length)  # <--- Gets the data itself
         self.server.tempfile.write(post_data)
+        self.server.tempfile.close()
         self.server.has_file = True
 
         self._set_response()

@@ -132,7 +132,7 @@ class PostPluginPlugin:
         else:
             print("starting server..")
             self.port = PlgOptionsManager().get_plg_settings().port
-            self.tempfile = NamedTemporaryFile()
+            self.tempfile = NamedTemporaryFile(delete=False)
             try:
                 self.server_thread = ServerThread(
                     tempfile=self.tempfile, port=self.port
