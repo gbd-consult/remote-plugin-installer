@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-from qgis.PyQt.QtCore import QFile, QThread, pyqtSignal
+from qgis.PyQt.QtCore import QThread, pyqtSignal
 
 
 class AddressInUseException(Exception):
@@ -21,8 +21,8 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.headers["Content-Length"]
         )  # <--- Gets the size of data
         post_data = self.rfile.read(content_length)  # <--- Gets the data itself
-        self.server.tempfile.write(post_data)
-        self.server.tempfile.close()
+        with open(self.server.filename, "wb") as tempfile:
+            tempfile.write(post_data)
         self.server.has_file = True
 
         self._set_response()
@@ -30,20 +30,20 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 
 class MyHTTPServer(HTTPServer):
-    def __init__(self, tempfile, *args):
+    def __init__(self, filename, *args):
         HTTPServer.__init__(self, *args)
-        self.tempfile = tempfile
+        self.filename = filename
 
 
 class ServerThread(QThread):
     output = pyqtSignal()
 
-    def __init__(self, tempfile, parent=None, port=6789):
+    def __init__(self, filename, parent=None, port=6789):
         QThread.__init__(self, parent)
         self.exiting = False
-        self.tempfile = tempfile
+        self.tempfile = filename
         try:
-            self.httpd = MyHTTPServer(tempfile, ("", port), RequestHandler)
+            self.httpd = MyHTTPServer(filename, ("", port), RequestHandler)
         except OSError:
             raise AddressInUseException
 

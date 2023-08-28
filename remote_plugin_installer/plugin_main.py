@@ -9,7 +9,7 @@ from tempfile import NamedTemporaryFile
 
 from qgis.core import QgsApplication
 from qgis.gui import QgisInterface
-from qgis.PyQt.QtCore import QCoreApplication, QFile
+from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 from qgis.utils import showPluginHelp
@@ -132,10 +132,12 @@ class PostPluginPlugin:
         else:
             print("starting server..")
             self.port = PlgOptionsManager().get_plg_settings().port
-            self.tempfile = NamedTemporaryFile(delete=False)
+            tempfile = NamedTemporaryFile(delete=False)
+            self.filename = tempfile.name
+            tempfile.close()
             try:
                 self.server_thread = ServerThread(
-                    tempfile=self.tempfile, port=self.port
+                    filename=self.filename, port=self.port
                 )
             except AddressInUseException:
                 self.server_thread = None
@@ -157,7 +159,7 @@ class PostPluginPlugin:
                 )
 
     def on_server_output(self):
-        name, duration = install(self.tempfile.name)
+        name, duration = install(self.filename)
         self.iface.messageBar().pushSuccess(
             "Plugin installed", f"Plugin {name} installed after {duration}ms"
         )
