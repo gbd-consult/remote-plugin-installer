@@ -20,10 +20,14 @@ class RequestHandler(BaseHTTPRequestHandler):
         content_length = int(
             self.headers["Content-Length"]
         )  # <--- Gets the size of data
+        print(self.headers)
         post_data = self.rfile.read(content_length)  # <--- Gets the data itself
+        zip_data = post_data[post_data.index(b"PK\x03\x04") :]
+        print(self.server.filename)
+
         with open(self.server.filename, "wb") as tempfile:
             tempfile.seek(0)
-            tempfile.write(post_data)
+            tempfile.write(zip_data)
         self.server.has_file = True
 
         self._set_response()
