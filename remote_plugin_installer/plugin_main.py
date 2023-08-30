@@ -132,7 +132,7 @@ class PostPluginPlugin:
         else:
             print("starting server..")
             self.port = PlgOptionsManager().get_plg_settings().port
-            tempfile = NamedTemporaryFile(delete=False)
+            tempfile = NamedTemporaryFile(delete=False, suffix=".zip")
             self.filename = tempfile.name
             tempfile.close()
             try:
