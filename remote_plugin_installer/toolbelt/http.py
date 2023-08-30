@@ -22,6 +22,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         )  # <--- Gets the size of data
         post_data = self.rfile.read(content_length)  # <--- Gets the data itself
         with open(self.server.filename, "wb") as tempfile:
+            tempfile.seek(0)
             tempfile.write(post_data)
         self.server.has_file = True
 
