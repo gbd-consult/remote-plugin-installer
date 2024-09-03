@@ -27,6 +27,7 @@ class PlgSettingsStructure:
     debug_mode: bool = False
     port: int = 6789
     version: str = __version__
+    telemetry: bool = False
 
 
 class PlgOptionsManager:

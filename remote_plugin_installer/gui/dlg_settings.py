@@ -17,7 +17,6 @@ from qgis.PyQt.QtGui import QDesktopServices, QIcon
 
 # project
 from remote_plugin_installer.__about__ import (
-    DIR_PLUGIN_ROOT,
     __icon_path__,
     __title__,
     __uri_homepage__,
@@ -84,6 +83,7 @@ class ConfigOptionsPage(FORM_CLASS, QgsOptionsPageWidget):
         # misc
         settings.debug_mode = self.opt_debug.isChecked()
         settings.port = self.opt_port.value()
+        settings.telemetry = self.telemetry.isChecked()
         settings.version = __version__
 
         # dump new settings into QgsSettings
@@ -101,6 +101,7 @@ class ConfigOptionsPage(FORM_CLASS, QgsOptionsPageWidget):
 
         # global
         self.opt_debug.setChecked(settings.debug_mode)
+        self.telemetry.setChecked(settings.telemetry)
         self.opt_port.setValue(settings.port)
         self.lbl_version_saved_value.setText(settings.version)
 
