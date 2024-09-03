@@ -4,9 +4,11 @@
     Main plugin module.
 """
 
-# PyQGIS
+import sys
+from pathlib import Path
 from tempfile import NamedTemporaryFile
 
+# PyQGIS
 from qgis.core import QgsApplication
 from qgis.gui import QgisInterface
 from qgis.PyQt.QtCore import QCoreApplication
@@ -34,6 +36,20 @@ class PostPluginPlugin:
         provides the hook by which you can manipulate the QGIS application at run time.
         :type iface: QgsInterface
         """
+        # Setup Sentry
+        if PlgOptionsManager.get_plg_settings().telemetry:
+            libs_dir = Path(__file__).parent / "libs"
+            if not str(libs_dir) in sys.path:
+                sys.path.append(str(libs_dir))
+            import sentry_sdk
+
+            sentry_sdk.init(
+                dsn="https://be0106374f7d65d93f0e59d9206c6f36@sentry.gbd-consult.de/4",
+                # Set traces_sample_rate to 1.0 to capture 100%
+                # of transactions for tracing.
+                traces_sample_rate=1.0,
+            )
+        
         self.iface = iface
         self.log = PlgLogger().log
         self.server_thread = None
