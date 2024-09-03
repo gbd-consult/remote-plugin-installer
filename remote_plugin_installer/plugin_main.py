@@ -9,7 +9,7 @@ from pathlib import Path
 from tempfile import NamedTemporaryFile
 
 # PyQGIS
-from qgis.core import QgsApplication
+from qgis.core import Qgis, QgsApplication
 from qgis.gui import QgisInterface
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.PyQt.QtGui import QIcon
@@ -49,7 +49,10 @@ class PostPluginPlugin:
                 # of transactions for tracing.
                 traces_sample_rate=1.0,
             )
-        
+            sentry_sdk.set_tag(
+                "qgis_version", Qgis.version()
+            )
+
         self.iface = iface
         self.log = PlgLogger().log
         self.server_thread = None
