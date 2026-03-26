@@ -18,10 +18,10 @@ tracker=None
 deprecated=False
 experimental=True
 qgisMinimumVersion=3.22
-qgisMaximumVersion=3.99
+qgisMaximumVersion=4.99
 
 # versionnement
-version=0.3
+version=0.4
 changelog=
  Version 0.1.0:
  - First release
